@@ -103,6 +103,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         updateNavHeader();
 
+        //set the home fragment as the default one
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
+
 
 
     }
