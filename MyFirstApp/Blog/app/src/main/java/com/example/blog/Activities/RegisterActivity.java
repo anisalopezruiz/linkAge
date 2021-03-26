@@ -104,6 +104,8 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
 
+
+
         ImgUserPhoto = findViewById(R.id.regUserPhoto);
         ImgUserPhoto.setOnClickListener(new View.OnClickListener() {
             @Override

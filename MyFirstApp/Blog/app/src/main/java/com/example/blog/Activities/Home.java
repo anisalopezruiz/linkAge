@@ -1,42 +1,57 @@
 package com.example.blog.Activities;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
 import com.example.blog.Activities.Fragments.HomeFragment;
 import com.example.blog.Activities.Fragments.ProfileFragment;
 import com.example.blog.Activities.Fragments.SettingsFragment;
+import com.example.blog.Activities.Models.Post;
 import com.example.blog.R;
+import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
-
-import androidx.annotation.NonNull;
-import androidx.core.view.GravityCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
+    private static final int REQUESCODE = 2;
     private AppBarConfiguration mAppBarConfiguration;
 
     FirebaseAuth mAuth;
@@ -45,6 +60,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     ImageView popupUserImage,popupPostImage,popupAddBtn;
     TextView popupTitle, popupDescription;
     ProgressBar popupClickProgress;
+    private static final int PReqCode = 2;
+    private Uri pickedImgUri = null;
 
 
     @Override
@@ -61,6 +78,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         //ini popup
         iniPopup();
+        setupPopupImageClick();
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -89,6 +107,75 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
+    private void setupPopupImageClick() {
+
+        popupPostImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //here when image clicks we need to open the gallery
+                //before we open the gallery we need to check if our app has access to user files
+                //we did this before in register activity I'm just going to copy the code to save time ...
+
+                checkAndRequestForPermission();
+
+            }
+        });
+
+    }
+
+    private void checkAndRequestForPermission() {
+
+        if (ContextCompat.checkSelfPermission(Home.this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(Home.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                Toast.makeText(Home.this, "Please accept for required permission", Toast.LENGTH_SHORT).show();
+
+            }
+
+            else {
+                ActivityCompat.requestPermissions(Home.this,
+                        new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},
+                        PReqCode);
+            }
+
+        }
+        else
+            //everything goes well : we have permission to access user gallery
+            openGallery();
+
+
+    }
+
+    private void openGallery() {
+        //TODO: open gallery intent and wait for user to pick an image
+
+        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        galleryIntent.setType("image/*");
+        startActivityForResult(galleryIntent,REQUESCODE);
+
+    }
+
+
+    //when user picked an image ...
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && requestCode == REQUESCODE && data != null) {
+
+            //the user has successfully picked an image
+            //we need to save its reference to a Uri variable
+            pickedImgUri = data.getData();
+            popupPostImage.setImageURI(pickedImgUri);
+
+        }
+
+
+    }
+
+
+
     private void iniPopup() {
 
         popAddPost = new Dialog(this);
@@ -115,12 +202,99 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         popupAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
+
                 popupAddBtn.setVisibility(View.INVISIBLE);
                 popupClickProgress.setVisibility(View.VISIBLE);
 
+                //we need to test all input fields (Title and description ) and post image
+                if (!popupTitle.getText().toString().isEmpty()
+                        && !popupDescription.getText().toString().isEmpty()
+                        && pickedImgUri != null) {
+
+                    //everything is okay no empty or null value
+                    //TODO: Create post object and add it to firebase database
+                    //first we need to upload post Image
+                    //access firebase storage
+                    StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("bloag_image");
+                    StorageReference imageFilePath = storageReference.child(pickedImgUri.getLastPathSegment());
+                    imageFilePath.putFile(pickedImgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                            imageFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    String imageDownloadLink = uri.toString();
+                                    //create post Object
+                                    Post post = new Post(popupTitle.getText().toString(),
+                                            popupDescription.getText().toString(),
+                                            imageDownloadLink,
+                                            currentuser.getUid(),
+                                            currentuser.getPhotoUrl().toString());
+
+                                    //Add post to firebase database
+
+                                    addPost(post);
+
+
+
+
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    //something goes wrong uploading picture
+                                    showMessage(e.getMessage());
+                                    popupClickProgress.setVisibility(View.INVISIBLE);
+                                    popupAddBtn.setVisibility(View.VISIBLE);
+
+
+
+                                }
+                            });
+
+                        }
+                    });
+
+
+
+                }
+
+                else {
+                    showMessage("Please verify all input fields and choose post image");
+                    popupAddBtn.setVisibility(View.VISIBLE);
+                    popupClickProgress.setVisibility(View.INVISIBLE);
+                }
             }
 
+        });
+
+
+
+
+    }
+
+    private void addPost(Post post) {
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Posts").push();
+
+        //get post unique ID and update post key
+        String key = myRef.getKey();
+        post.setPostKey(key);
+
+
+        //add post data to firebase database
+
+        myRef.setValue(post).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                showMessage("Post Added Succesfully");
+                popupClickProgress.setVisibility(View.INVISIBLE);
+                popupAddBtn.setVisibility(View.VISIBLE);
+                popAddPost.dismiss();
+            }
         });
 
 
@@ -197,4 +371,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         return true;
 
     }
+
+
+    private void showMessage(String message) {
+        Toast.makeText(Home.this,message,Toast.LENGTH_LONG).show();
+
+    }
+
 }
