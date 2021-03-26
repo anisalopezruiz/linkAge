@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        tools:context=".MainActivity">
+
+        <Button
+            android:id="@+id/my_post"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="My Posts"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            tools:backgroundTint="#00FFFFFF"
+            tools:layout_constraintEnd_toEndOf="parent"
+            tools:layout_constraintHorizontal_weight="1"
+            tools:layout_constraintStart_toEndOf="@+id/others"
+            tools:layout_constraintTop_toBottomOf="@+id/mission_title" />
+
+        <Button
+            android:id="@+id/others"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#009688"
+            android:text="Other Posts"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            tools:backgroundTint="@color/teal_700"
+            tools:layout_constraintEnd_toStartOf="@+id/my_post"
+            tools:layout_constraintHorizontal_weight="1"
+            tools:layout_constraintStart_toStartOf="parent"
+            tools:layout_constraintTop_toBottomOf="@+id/mission_title"
+            tools:layout_editor_absoluteX="20dp"
+            tools:layout_editor_absoluteY="72dp" />
+
+        <TextView
+            android:id="@+id/mission_title"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/aldrich"
+            android:gravity="center"
+            android:text="Mission"
+            android:textSize="24sp"
+            tools:layout_constraintDimensionRatio="h,16:9"
+            tools:layout_constraintEnd_toEndOf="parent"
+            tools:layout_constraintStart_toStartOf="parent"
+            tools:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="@+id/others"
+            app:layout_constraintTop_toBottomOf="@+id/others"
+            app:srcCompat="@android:drawable/ic_menu_sort_by_size" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Filter"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButton"
+            app:layout_constraintStart_toEndOf="@+id/imageButton"
+            app:layout_constraintTop_toTopOf="@+id/imageButton" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
