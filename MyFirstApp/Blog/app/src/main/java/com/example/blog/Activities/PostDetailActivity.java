@@ -115,14 +115,22 @@ public class PostDetailActivity extends AppCompatActivity {
         txtPostTitle.setText(postTitle);
 
         String userpostImage = getIntent().getExtras().getString("userPhoto");
-        Glide.with(this).load(userpostImage).into(imgUserPost);
+
+        if (userpostImage != null) {
+            Glide.with(this).load(userpostImage).into(imgUserPost);
+        }
+        else
+            Glide.with(this).load(R.drawable.avatar).into(imgUserPost);
 
         String postDescription = getIntent().getExtras().getString("description");
         txtPostDesc.setText(postDescription);
 
         //set comment user image
-
-        Glide.with(this).load(firebaseUser.getPhotoUrl()).into(imgCurrentUser);
+        if (firebaseUser.getPhotoUrl() != null) {
+            Glide.with(this).load(firebaseUser.getPhotoUrl()).into(imgCurrentUser);
+        }
+        else
+            Glide.with(this).load(R.drawable.avatar).into(imgCurrentUser);
 
         //get post id
         PostKey = getIntent().getExtras().getString("postKey");

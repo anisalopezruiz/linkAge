@@ -231,16 +231,33 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                                 public void onSuccess(Uri uri) {
                                     String imageDownloadLink = uri.toString();
                                     //create post Object
-                                    Post post = new Post(popupTitle.getText().toString(),
-                                            popupDescription.getText().toString(),
-                                            imageDownloadLink,
-                                            currentuser.getUid(),
-                                            currentuser.getPhotoUrl().toString());
 
-                                    //Add post to firebase database
+                                    if(currentuser.getPhotoUrl() != null) {
+                                        Post post = new Post(popupTitle.getText().toString(),
+                                                popupDescription.getText().toString(),
+                                                imageDownloadLink,
+                                                currentuser.getUid(),
+                                                currentuser.getPhotoUrl().toString());
 
-                                    addPost(post);
+                                        //Add post to firebase database
 
+                                        addPost(post);
+                                    }
+                                    else{
+
+                                        Post post = new Post(popupTitle.getText().toString(),
+                                                popupDescription.getText().toString(),
+                                                imageDownloadLink,
+                                                currentuser.getUid(),
+                                                null);
+
+                                        //Add post to firebase database
+
+                                        addPost(post);
+
+
+
+                                    }
 
 
 
@@ -335,7 +352,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         // now we will use Glide to load user image
         // first we need to import the library
 
-        Glide.with(this).load(currentuser.getPhotoUrl()).into(navUserPhot);
+        if (currentuser.getPhotoUrl() != null) {
+            Glide.with(this).load(currentuser.getPhotoUrl()).into(navUserPhot);
+        }else
+            Glide.with(this).load(R.drawable.avatar).into(navUserPhot);
+
     }
 
 
