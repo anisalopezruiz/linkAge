@@ -29,7 +29,7 @@
             tools:ignore="VectorDrawableCompat" />
 
         <TextView
-            android:id="@+id/post_detail_text"
+            android:id="@+id/post_detail_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -58,7 +58,7 @@
             android:background="#2e2e2e"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/post_detail_text" />
+            app:layout_constraintTop_toBottomOf="@+id/post_detail_title" />
 
         <TextView
             android:id="@+id/post_detail_date_name"
@@ -133,6 +133,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/post_detail_comment"
             app:layout_constraintTop_toTopOf="@+id/post_detail_comment" />
+
+        <ImageView
+            android:id="@+id/post_detail_user_img"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/post_detail_date_name"
+            app:layout_constraintStart_toEndOf="@+id/post_detail_date_name"
+            app:layout_constraintTop_toTopOf="@+id/post_detail_date_name"
+            tools:srcCompat="@tools:sample/avatars" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
