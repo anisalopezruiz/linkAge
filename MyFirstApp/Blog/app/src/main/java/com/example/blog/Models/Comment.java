@@ -1,4 +1,4 @@
-package com.example.blog.Adapters;
+package com.example.blog.Models;
 
 import com.google.firebase.database.ServerValue;
 
