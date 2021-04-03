@@ -30,11 +30,11 @@
         app:srcCompat="@drawable/reg_btn_style" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/new_mission_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:text="Button"
+        android:text="Submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -59,12 +59,119 @@
         android:id="@+id/mission_repeat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="Reoccurring Event"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/duration_hr"
+        app:layout_constraintTop_toBottomOf="@+id/duration_hr" />
+
+    <EditText
+        android:id="@+id/duration_hr"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/reg_edittext_style"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/mission_duration"
+        app:layout_constraintTop_toBottomOf="@+id/mission_duration" />
+
+    <EditText
+        android:id="@+id/duration_min"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/reg_edittext_style"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@+id/mission_duration_hr"
+        app:layout_constraintStart_toEndOf="@+id/mission_duration_hr"
+        app:layout_constraintTop_toTopOf="@+id/mission_duration_hr" />
+
+    <TextView
+        android:id="@+id/mission_duration_hr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="HR"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/duration_hr"
+        app:layout_constraintStart_toEndOf="@+id/duration_hr"
+        app:layout_constraintTop_toTopOf="@+id/duration_hr" />
+
+    <TextView
+        android:id="@+id/mission_duration_min"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:text="MIN"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/duration_min"
+        app:layout_constraintStart_toEndOf="@+id/duration_min"
+        app:layout_constraintTop_toTopOf="@+id/duration_min" />
+
+    <TextView
+        android:id="@+id/mission_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="16dp"
+        android:text="Duration"
+        android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/mission_reward"
         app:layout_constraintTop_toBottomOf="@+id/mission_reward" />
+
+    <EditText
+        android:id="@+id/duration_every"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/reg_edittext_style"
+        android:ems="10"
+        android:hint="e.g. week, month, Monday, etc."
+        android:inputType="textMultiLine|textCapWords"
+        android:maxHeight="70dp"
+        app:layout_constraintBottom_toBottomOf="@+id/mission_duration_every"
+        app:layout_constraintStart_toEndOf="@+id/mission_duration_every"
+        app:layout_constraintTop_toBottomOf="@+id/mission_repeat"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/mission_duration_every"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Every"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/mission_repeat"
+        app:layout_constraintTop_toTopOf="@id/duration_every"
+        app:layout_constraintBottom_toBottomOf="@id/duration_every" />
+
+    <TextView
+        android:id="@+id/mission_upload_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Upload Image"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/mission_duration_every"
+        app:layout_constraintTop_toBottomOf="@+id/duration_every" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/mission_upload_image"
+        app:layout_constraintTop_toBottomOf="@+id/mission_upload_image"
+        app:srcCompat="@drawable/ic_menu_gallery" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
