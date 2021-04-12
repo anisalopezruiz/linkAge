@@ -1,10 +1,11 @@
 package com.example.blog.Activities;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.view.Gravity;
-import android.view.ViewGroup;
+import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,7 +13,9 @@ import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.blog.Activities.Fragments.NewMissionActivity1;
 import com.example.blog.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -20,25 +23,39 @@ public class MissionActivity extends AppCompatActivity
 {
     FirebaseAuth author;
     FirebaseUser curUser;
-    Dialog addMission;
     Button otherMissionPage, myPostPage;
     ImageView noPostImg;
     TextView missionNoPost;
 
-    private void addNewMission()
-    {
-        addMission = new Dialog(this);
-        addMission.setContentView(R.layout.other_post);
-        addMission.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        addMission.getWindow().setLayout(Toolbar.LayoutParams.MATCH_PARENT, Toolbar.LayoutParams.WRAP_CONTENT);
-        addMission.getWindow().getAttributes().gravity = Gravity.TOP;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.my_post);
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        //mission page widgets
-        otherMissionPage = addMission.findViewById(R.id.mission_other_posts);
-        myPostPage = addMission.findViewById(R.id.mission_my_post);
-        noPostImg = addMission.findViewById(R.id.no_post_image);
-        missionNoPost = addMission.findViewById(R.id.mission_no_post);
+        //ini
 
+        author = FirebaseAuth.getInstance();
+        curUser = author.getCurrentUser();
+
+        FloatingActionButton fab1 = findViewById(R.id.add_new_post);
+        fab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openNewMissionActivity1();
+            }
+        });
     }
+
+    private void openNewMissionActivity1() {
+        Intent intent = new Intent(this, NewMissionActivity1.class);
+        startActivity(intent);
+    }
+
+    //TODO: Once first post is saved, make image and sentence invisible
+    //TODO: Display the Post, make sure the page is scrollable
+    //TODO: Link to Other Post
+    //TODO: Other Post needs to display all the posts from all the accounts
 
 }
