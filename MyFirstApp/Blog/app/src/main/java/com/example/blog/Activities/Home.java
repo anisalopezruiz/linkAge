@@ -1,6 +1,7 @@
 package com.example.blog.Activities;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -36,7 +38,6 @@ import com.example.blog.Activities.Fragments.ProfileFragment;
 import com.example.blog.Activities.Fragments.SettingsFragment;
 import com.example.blog.Activities.Models.Post;
 import com.example.blog.R;
-import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -88,18 +89,28 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 popAddPost.show();
             }
         });
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        /**        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_storyboard, R.id.nav_gallery, R.id.nav_slideshow)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
+*/
 
         updateNavHeader();
 
@@ -360,25 +371,28 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
 
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
+        if (id == R.id.nav_storyboard) {
 
-            getSupportActionBar().setTitle("Home");
+            getSupportActionBar().setTitle("Storyboard");
             getSupportFragmentManager().beginTransaction().replace(R.id.container,new HomeFragment()).commit();
 
-        } else if (id == R.id.nav_profile) {
+        }
+        else if (id == R.id.nav_mission) {
+
+            getSupportActionBar().setTitle("Mission");
+            getSupportFragmentManager().beginTransaction().replace(R.id.container,new SettingsFragment()).commit();
+            
+        }
+        else if (id == R.id.nav_profile) {
 
             getSupportActionBar().setTitle("Profile");
-            getSupportFragmentManager().beginTransaction().replace(R.id.container,new ProfileFragment()).commit();
-
-        } else if (id == R.id.nav_settings) {
-
-            getSupportActionBar().setTitle("Settings");
-            getSupportFragmentManager().beginTransaction().replace(R.id.container,new SettingsFragment()).commit();
-
+            moveToNewActivity(); //the problem this method does not work might be it's not going from a fragment to an activity
+            //  getSupportFragmentManager().beginTransaction().replace(R.id.container,new ProfileFragment()).commit();
 
         }
         else if (id == R.id.nav_signout) {
@@ -388,12 +402,19 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             startActivity(loginActivity);
             finish();
 
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+
+    }
+
+    private void moveToNewActivity () {
+
+        Intent i = new Intent(this, MissionActivity.class);
+        startActivity(i);
+        ((Activity) this).overridePendingTransition(0, 0);
 
     }
 

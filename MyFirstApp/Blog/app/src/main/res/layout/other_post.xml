@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -21,13 +22,13 @@
         android:id="@+id/mission_other_posts"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginRight="5dp"
-        android:background="@drawable/disabled_btn_style"
+        android:background="@drawable/enabled_btn_style"
         android:text="Other Missions"
-        android:textColor="#6E6E6E"
         app:backgroundTint="#00FFFFFF"
+        app:backgroundTintMode="add"
         app:iconTint="#00FFFFFF"
         app:layout_constraintEnd_toStartOf="@+id/mission_my_post"
         app:layout_constraintHorizontal_bias="0.5"
@@ -40,53 +41,17 @@
         android:id="@+id/mission_my_post"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/enabled_btn_style"
+        android:background="@drawable/disabled_btn_style"
         android:text="My Posts"
+        android:textColor="#6E6E6E"
         app:backgroundTint="#00FFFFFF"
-        app:backgroundTintMode="add"
         app:iconTint="#00FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toEndOf="@+id/mission_other_posts"
         app:layout_constraintTop_toBottomOf="@+id/mission_page_title" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_new_post"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
-        android:clickable="true"
-        app:backgroundTint="#EBA6A9"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
-
-    <TextView
-        android:id="@+id/mission_no_post"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="You haven't posted anything yet.\nCreate your first post today!"
-        android:textAlignment="center"
-        android:textSize="18dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/no_post_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/mission_no_post"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="@drawable/ic_baseline_create_24" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
